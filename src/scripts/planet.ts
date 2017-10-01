@@ -36,7 +36,7 @@ class Planet{
 
         this.velocity = this.velocity.add(dvSum);
 
-        this.position = this.position.add(this.velocity.multiply(timestampDelta/100));
+        this.position = this.position.add(this.velocity.multiply(timestampDelta));
         this.sprite.position = this.position.toPoint();
     }
 }

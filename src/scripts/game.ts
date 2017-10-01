@@ -6,8 +6,8 @@ import Planet from "./planet";
 let planets : Planet[];
 
 function setup(stage: PIXI.Container){
-    let planet1 = new Planet(new Vector(250, 250),new Vector(0,0), 10000, 0xFF0000);
-    let planet2 = new Planet(new Vector(300, 200),new Vector(0.5,0.5), 1, 0x00FF00);
+    let planet1 = new Planet(new Vector(250, 250),new Vector(0,0), 100, 0xFF0000);
+    let planet2 = new Planet(new Vector(300, 200),new Vector(0.001,0.01), 1, 0x00FF00);
 
     stage.addChild(planet1.sprite);
     stage.addChild(planet2.sprite);
@@ -22,8 +22,9 @@ function startGameLoop(stage: PIXI.Container, renderer: PIXI.WebGLRenderer | PIX
 
     function gameLoop(timestamp : number){
         let timestampDelta = lastTimestamp == undefined ? 0 : (timestamp - lastTimestamp);
+        let scaledTimestampDelta = timestampDelta * 10;
 
-        planets.forEach(p => p.update(timestampDelta, planets.filter(fp => fp != p)));
+        planets.forEach(p => p.update(scaledTimestampDelta, planets.filter(fp => fp != p)));
 
         renderer.render(stage);
 
