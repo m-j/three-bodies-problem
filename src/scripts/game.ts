@@ -59,7 +59,10 @@ function startGameLoop(stage: PIXI.Container, renderer: PIXI.WebGLRenderer | PIX
         },0);
 
         let centerOfMass = sumOfMassPositions.multiply(1/sumOfMasses);
+
         centerOfMassSprite.position = centerOfMass.toPoint();
+
+        stage.pivot = centerOfMass.subtract(new Vector(renderer.width/2,renderer.height/2)).toPoint(); // subtract(new Vector(stage.width / 2, stage.height / 2)).toPoint();
 
         renderer.render(stage);
 
