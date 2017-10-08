@@ -1,5 +1,23 @@
-#greeting {
-  background-color: green;
-  border: 10px solid cornflowerblue;
-  padding: 10px;
+.wrapper {
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: 1fr 1fr;
+  grid-template-areas:
+    "renderer"
+    "controls";
+
+  @media(min-width: 1024px){
+    grid-template-columns: 512px 1fr;
+    grid-template-areas:
+      "renderer controls";
+  }
+}
+
+.renderer {
+  grid-area: renderer;
+}
+
+.controls {
+  background-color: red;
+  grid-area: controls;
 }

@@ -1,6 +1,7 @@
 import '../styles/base.scss';
 import * as PIXI from 'pixi.js';
 import startGameLoop from './game';
+import '../styles/base.scss';
 
 let renderer = PIXI.autoDetectRenderer(512, 512, {transparent: false});
 
