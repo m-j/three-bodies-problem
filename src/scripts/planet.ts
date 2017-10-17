@@ -1,6 +1,6 @@
 import Point = PIXI.Point;
 import Graphics = PIXI.Graphics;
-import Vector from "./vector";
+import {Vector} from "./vector";
 
 const G = 6.67 * Math.pow(10, -5);
 const maxTimestampDelta = 5;

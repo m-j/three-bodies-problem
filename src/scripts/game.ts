@@ -1,6 +1,6 @@
 import * as PIXI from 'pixi.js';
 import Graphics = PIXI.Graphics;
-import Vector from "./vector";
+import {Vector} from "./vector";
 import Planet from "./planet";
 
 let planets : Planet[];

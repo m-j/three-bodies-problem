@@ -7,7 +7,7 @@
     "controls";
 
   @media(min-width: 1024px){
-    grid-template-columns: 512px 1fr;
+    grid-template-columns: minmax(512px, 3fr) 2fr;
     grid-template-areas:
       "renderer controls";
   }

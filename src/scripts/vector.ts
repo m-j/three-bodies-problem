@@ -1,6 +1,11 @@
 import Point = PIXI.Point;
 
-class Vector{
+interface IVector {
+    x: number;
+    y: number;
+}
+
+class Vector implements IVector{
     public x:number;
     public y:number;
 
@@ -34,4 +39,4 @@ class Vector{
     }
 }
 
-export default Vector;
+export {Vector, IVector};

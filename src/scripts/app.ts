@@ -2,6 +2,9 @@ import '../styles/base.scss';
 import * as PIXI from 'pixi.js';
 import startGameLoop from './game';
 import '../styles/base.scss';
+import {initializeControls} from './controls/controls';
+
+initializeControls();
 
 let renderer = PIXI.autoDetectRenderer(512, 512, {transparent: false});
 
@@ -12,6 +15,10 @@ rendererHolder.appendChild(renderer.view);
 let stage = new PIXI.Container();
 
 renderer.render(stage);
+
+window.addEventListener('resize', (e)=> {
+
+})
 
 function setup(){
     startGameLoop(stage, renderer);
