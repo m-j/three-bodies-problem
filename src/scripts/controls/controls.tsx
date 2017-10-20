@@ -2,6 +2,7 @@ import * as React from 'react';
 import * as ReactDOM from "react-dom";
 import * as _ from 'lodash';
 import {IVector} from "../vector";
+import {VectorInput, VectorInputProps} from "./vector-input";
 
 const dupa = 'dupa';
 
@@ -15,32 +16,6 @@ class Planet extends React.Component {
     }
 }
 
-
-interface VectorInputProps {
-    onValueChanged : any,
-    value : IVector
-}
-
-class VectorInput extends React.Component<VectorInputProps> {
-    constructor(props:any){
-        super(props);
-        this.setState({x:0, y:0});
-    }
-
-    handleChange({target}:any){
-        let value = target.value;
-        let name = target.name;
-
-        // this.setState({[name] :value});
-        this.props.value
-    }
-
-    render(){
-        return (
-            <span>x:<input name="x" value={this.props.value.x} onChange={this.handleChange} /> y: <input name="y" value={this.props.value.y} onChange={this.handleChange}/></span>
-        )
-    }
-}
 
 interface PlanetState {
     mass : number,
@@ -88,15 +63,53 @@ class Controls extends React.Component<any,ControlsState> {
     }
 
     addPlanet(){
-
+        this.setState(oldState => {
+            let newPlanets = _.clone(oldState.planets);
+            newPlanets.push(oldState.newPlanet);
+            return {planets: newPlanets};
+        });
     }
 
-    onNewPlanetPositionChanged(){
-
+    onNewPlanetPositionChanged(newValue:any){
+        this.setState((prevState) => {
+            return _.merge({}, prevState, {
+                newPlanet : {
+                    position: newValue
+                }
+            })
+        });
     }
 
-    onNewPlanetVelocityChanged(){
+    onNewPlanetVelocityChanged(newValue:any){
+        this.setState((prevState) => {
+            return _.merge({}, prevState, {
+                newPlanet : {
+                    velocity: newValue
+                }
+            })
+        });
+    }
 
+    onNewPlanetMassChange({target}:any){
+        let newMass = parseFloat(target.value);
+        this.setState((prevState) => {
+            return _.merge({}, prevState, {
+                newPlanet : {
+                    mass: newMass
+                }
+            })
+        });
+    }
+
+    onNewPlanetColorChange({target}:any){
+        let newColor = parseInt(target.value);
+        this.setState((prevState) => {
+            return _.merge({}, prevState, {
+                newPlanet : {
+                    color: newColor
+                }
+            })
+        });
     }
 
     render(){
@@ -109,17 +122,18 @@ class Controls extends React.Component<any,ControlsState> {
                     <h2>Add planet</h2>
                     <div>
                         position:
-                        <VectorInput value={this.state.newPlanet.position} onValueChanged={this.onNewPlanetPositionChanged}/>
+                        <VectorInput value={this.state.newPlanet.position} onValueChanged={this.onNewPlanetPositionChanged.bind(this)}/>
                     </div>
                     <div>
                         velocity:
-                        <VectorInput value={this.state.newPlanet.velocity} onValueChanged={this.onNewPlanetVelocityChanged}/>
+                        <VectorInput value={this.state.newPlanet.velocity} onValueChanged={this.onNewPlanetVelocityChanged.bind(this)}/>
                     </div>
                     <div>
-                        mass: <input/> color: <input/>
+                        mass: <input value={this.state.newPlanet.mass} onChange={this.onNewPlanetMassChange.bind(this)}/>
+                        color: <input value={this.state.newPlanet.color} onChange={this.onNewPlanetColorChange.bind(this)}/>
                     </div>
                     <div>
-                        <button onClick={this.addPlanet}>Add planet</button>
+                        <button onClick={this.addPlanet.bind(this)}>Add planet</button>
                     </div>
                 </div>
                 <div>
