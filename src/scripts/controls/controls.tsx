@@ -3,26 +3,21 @@ import * as ReactDOM from "react-dom";
 import * as _ from 'lodash';
 import {IVector} from "../vector";
 import {VectorInput, VectorInputProps} from "./vector-input";
+import {Planet, PlanetState} from './planet';
 
 const dupa = 'dupa';
 
-class Planet extends React.Component {
-    render(){
-        return (
-            <div className="planet-control">
-                P: [1,2] V: [5,6] m: 123 <button>Remove</button>
-            </div>
-        )
-    }
+
+
+function numberToColor(n: number){
+    return '#' + n.toString(16);
+}
+
+function parseHexColor(s: string){
+    return parseInt(s.replace('#', ''), 16);
 }
 
 
-interface PlanetState {
-    mass : number,
-    position : IVector,
-    velocity : IVector,
-    color : number
-}
 
 interface ControlsState {
     speed: number,
@@ -38,20 +33,20 @@ class Controls extends React.Component<any,ControlsState> {
             newPlanet : {
                 position: {x: 50, y: 50},
                 velocity: {x: 1, y: 2},
-                color: 0x00FFFF,
+                color: '#FFFFFFFF',
                 mass: 50
             },
             planets: [
                 {
                     position : {x:50, y:50},
                     velocity : {x:1,y:2},
-                    color: 0x00FFFF,
+                    color: '#FFFF00FF',
                     mass : 50,
                 },
                 {
                     position : {x:50,y:50},
                     velocity : {x:1,y:2},
-                    color: 0x00FFFF,
+                    color: '#FF00FFFF',
                     mass : 50,
                 }
             ]
@@ -102,11 +97,11 @@ class Controls extends React.Component<any,ControlsState> {
     }
 
     onNewPlanetColorChange({target}:any){
-        let newColor = parseInt(target.value);
+
         this.setState((prevState) => {
             return _.merge({}, prevState, {
                 newPlanet : {
-                    color: newColor
+                    color: target.value
                 }
             })
         });
@@ -140,7 +135,7 @@ class Controls extends React.Component<any,ControlsState> {
                     <h2>Planets</h2>
                     <div>
                         {this.state.planets.map((p) => {
-                            return (<div>{p.mass}</div>)
+                            return (<div><Planet mass={p.mass} position={p.position} velocity={p.velocity} color={p.color}/></div>)
                         })}
                     </div>
                 </div>
