@@ -6,7 +6,7 @@ function vectorToString(v: IVector){
     return `[${v.x}, ${v.y}]`
 }
 
-class Planet extends React.Component<PlanetState> {
+class Planet extends React.Component<PlanetProps> {
     constructor(){
         super();
     }
@@ -25,11 +25,11 @@ class Planet extends React.Component<PlanetState> {
 }
 
 
-interface PlanetState {
+interface PlanetProps {
     mass : number,
     position : IVector,
     velocity : IVector,
     color : string
 }
 
-export {PlanetState, Planet}
+export {PlanetProps, Planet}

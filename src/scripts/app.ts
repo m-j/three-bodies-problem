@@ -2,7 +2,7 @@ import '../styles/base.scss';
 import * as PIXI from 'pixi.js';
 import Game from './game';
 import '../styles/base.scss';
-import {initializeControls} from './controls/controls';
+import {initializeControls, ControlsState} from './controls/controls';
 
 window.addEventListener('resize', (e)=> {
 
@@ -16,17 +16,23 @@ function setup(){
     // }
     //
     // requestAnimationFrame(gameLoop);
-    initializeControls();
 
-    let renderer = PIXI.autoDetectRenderer(512, 512, {transparent: false});
+    let renderer = null;
 
-    let rendererHolder = document.getElementById('renderer');
-    rendererHolder.appendChild(renderer.view);
+    initializeControls((state: ControlsState) => {
+        renderer = PIXI.autoDetectRenderer(512, 512, {transparent: false});
 
-    (renderer as any).backgroundColor = 0x000000;
-    let stage = new PIXI.Container();
+        let rendererHolder = document.getElementById('renderer');
+        rendererHolder.appendChild(renderer.view);
 
-    renderer.render(stage);
+        (renderer as any).backgroundColor = 0x000000;
+        let stage = new PIXI.Container();
+        renderer.render(stage);
+
+        let game = new Game(stage, renderer, state);
+        game.startGameLoop();
+    });
+
 
 }
 

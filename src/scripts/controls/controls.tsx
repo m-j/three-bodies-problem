@@ -3,7 +3,7 @@ import * as ReactDOM from "react-dom";
 import * as _ from 'lodash';
 import {IVector} from "../vector";
 import {VectorInput, VectorInputProps} from "./vector-input";
-import {Planet, PlanetState} from './planet';
+import {Planet, PlanetProps} from './planet';
 
 const dupa = 'dupa';
 
@@ -21,11 +21,17 @@ function parseHexColor(s: string){
 
 interface ControlsState {
     speed: number,
-    newPlanet?: PlanetState
-    planets : [PlanetState]
+    newPlanet?: PlanetProps
+    planets : [PlanetProps]
 }
 
-class Controls extends React.Component<any,ControlsState> {
+type startCallback = (c: ControlsState) => (void);
+
+interface ControlsProps {
+    onSimulationStart : startCallback
+}
+
+class Controls extends React.Component<ControlsProps, ControlsState> {
     constructor(){
         super();
         this.state = {
@@ -111,7 +117,7 @@ class Controls extends React.Component<any,ControlsState> {
         return (
             <div>
                 <h1>Three bodies problem</h1>
-                <button>Start simulation</button>
+                <button onClick={this.props.onSimulationStart.bind(this)}>Start simulation</button>
                 Speed: <input/>
                 <div>
                     <h2>Add planet</h2>
@@ -144,9 +150,9 @@ class Controls extends React.Component<any,ControlsState> {
     }
 }
 
-function initializeControls(){
-    ReactDOM.render(<Controls/>,
+function initializeControls(onStart: startCallback){
+    ReactDOM.render(<Controls onSimulationStart={onStart}/>,
         document.getElementById('controls'));
 }
 
-export {initializeControls};
+export {initializeControls, ControlsState};
