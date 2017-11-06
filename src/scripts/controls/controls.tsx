@@ -5,22 +5,9 @@ import {IVector} from "../vector";
 import {VectorInput, VectorInputProps} from "./vector-input";
 import {Planet, PlanetProps} from './planet';
 
-const dupa = 'dupa';
-
-
-
-function numberToColor(n: number){
-    return '#' + n.toString(16);
-}
-
-function parseHexColor(s: string){
-    return parseInt(s.replace('#', ''), 16);
-}
-
-
-
 interface ControlsState {
     speed: number,
+    simulationStarted: boolean,
     newPlanet?: PlanetProps
     planets : [PlanetProps]
 }
@@ -36,24 +23,25 @@ class Controls extends React.Component<ControlsProps, ControlsState> {
         super();
         this.state = {
             speed: 1,
+            simulationStarted: false,
             newPlanet : {
-                position: {x: 50, y: 50},
-                velocity: {x: 1, y: 2},
-                color: '#FFFFFFFF',
-                mass: 50
+                position: {x: 320, y: 300},
+                velocity: {x: 0.01, y: 0.001},
+                color: '#ff14bde2',
+                mass: 0.5
             },
             planets: [
                 {
-                    position : {x:50, y:50},
-                    velocity : {x:1,y:2},
-                    color: '#FFFF00FF',
-                    mass : 50,
+                    position : {x:250, y:250},
+                    velocity : {x:0,y:0},
+                    color: '#fff4aa42',
+                    mass : 100,
                 },
                 {
-                    position : {x:50,y:50},
-                    velocity : {x:1,y:2},
-                    color: '#FF00FFFF',
-                    mass : 50,
+                    position : {x:300,y:200},
+                    velocity : {x:0.001,y:0.01},
+                    color: '#ff87e540',
+                    mass : 1,
                 }
             ]
         } as ControlsState;
@@ -113,11 +101,36 @@ class Controls extends React.Component<ControlsProps, ControlsState> {
         });
     }
 
+    onStartStop(){
+        this.setState(prevState => {
+            if(prevState.simulationStarted){
+                return {
+                    simulationStarted: false
+                }
+            }
+            else {
+                return {
+                    simulationStarted: true
+                }
+            }
+        });
+
+        this.props.onSimulationStart(this.state);
+    }
+
+    onRemovePlanet(planet: PlanetProps){
+        this.setState(prevState => {
+           return {
+               planets: prevState.planets.filter(p => p != planet)
+           }
+        });
+    }
+
     render(){
         return (
             <div>
                 <h1>Three bodies problem</h1>
-                <button onClick={this.props.onSimulationStart.bind(this)}>Start simulation</button>
+                <button onClick={this.onStartStop.bind(this)}>{this.state.simulationStarted ? 'Stop' : 'Start'}</button>
                 Speed: <input/>
                 <div>
                     <h2>Add planet</h2>
@@ -141,7 +154,7 @@ class Controls extends React.Component<ControlsProps, ControlsState> {
                     <h2>Planets</h2>
                     <div>
                         {this.state.planets.map((p) => {
-                            return (<div><Planet mass={p.mass} position={p.position} velocity={p.velocity} color={p.color}/></div>)
+                            return (<div><Planet mass={p.mass} position={p.position} velocity={p.velocity} color={p.color} onRemove={() => this.onRemovePlanet(p)}/></div>)
                         })}
                     </div>
                 </div>

@@ -4,12 +4,22 @@ import {Vector} from "./vector";
 import Planet from "./planet";
 import {ControlsState} from './controls/controls'
 
+function numberToColor(n: number){
+    return '#' + n.toString(16);
+}
+
+function parseHexColor(s: string){
+    return parseInt(s.replace('#', ''), 16);
+}
+
+
 class Game {
     private planets : Planet[];
     private centerOfMassSprite : PIXI.Graphics;
     private stage: PIXI.Container;
     private renderer: PIXI.WebGLRenderer | PIXI.CanvasRenderer;
     private controlsState: ControlsState;
+    private animationFrameHandler : any;
 
     constructor(stage: PIXI.Container, renderer: PIXI.WebGLRenderer | PIXI.CanvasRenderer, controlsState: ControlsState){
         this.stage = stage;
@@ -34,13 +44,23 @@ class Game {
     }
 
     private setup(){
-        let planet1 = new Planet(new Vector(250, 250),new Vector(0,0), 100, 0xFF0000);
-        let planet2 = new Planet(new Vector(300, 200),new Vector(0.001,0.01), 1, 0x00FF00);
+        // let planet1 = new Planet(new Vector(250, 250),new Vector(0,0), 100, 0xFF0000);
+        // let planet2 = new Planet(new Vector(300, 200),new Vector(0.001,0.01), 1, 0x00FF00);
+        //
+        // this.stage.addChild(planet1.sprite);
+        // this.stage.addChild(planet2.sprite);
+        //
+        // this.planets = [planet1, planet2];
+        //
+        // this.centerOfMassSprite = this.createCrosshairSprite();
+        //
+        // this.stage.addChild(this.centerOfMassSprite);
 
-        this.stage.addChild(planet1.sprite);
-        this.stage.addChild(planet2.sprite);
+        this.planets = this.controlsState.planets.map(p => {
+            return new Planet(Vector.fromIVector(p.position), Vector.fromIVector(p.velocity), p.mass, parseHexColor(p.color));
+        });
 
-        this.planets = [planet1, planet2];
+        this.planets.forEach(p => this.stage.addChild(p.sprite));
 
         this.centerOfMassSprite = this.createCrosshairSprite();
 
@@ -75,10 +95,14 @@ class Game {
 
             lastTimestamp = timestamp;
 
-            requestAnimationFrame(gameLoop);
+            this.animationFrameHandler = requestAnimationFrame(gameLoop);
         };
 
-        requestAnimationFrame(gameLoop);
+         this.animationFrameHandler = requestAnimationFrame(gameLoop);
+    }
+
+    public stopGameLoop(){
+         cancelAnimationFrame(this.animationFrameHandler);
     }
 }
 

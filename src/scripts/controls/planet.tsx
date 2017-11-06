@@ -14,11 +14,11 @@ class Planet extends React.Component<PlanetProps> {
     render(){
         let style = {
             backgroundColor : this.props.color
-        }
+        };
 
         return (
             <div className="planet-control" style={style}>
-                P: {vectorToString(this.props.position)} V: {vectorToString(this.props.position)} m: {this.props.mass} <button>Remove</button>
+                P: {vectorToString(this.props.position)} V: {vectorToString(this.props.velocity)} m: {this.props.mass} <button onClick={this.props.onRemove.bind(this)}>Remove</button>
             </div>
         )
     }
@@ -29,7 +29,8 @@ interface PlanetProps {
     mass : number,
     position : IVector,
     velocity : IVector,
-    color : string
+    color : string,
+    onRemove? : (p: PlanetProps) => void
 }
 
 export {PlanetProps, Planet}

@@ -37,6 +37,10 @@ class Vector implements IVector{
     toVersor(){
         return this.multiply(1/this.length());
     }
+
+    public static fromIVector(v : IVector){
+        return new Vector(v.x, v.y);
+    }
 }
 
 export {Vector, IVector};

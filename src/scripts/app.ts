@@ -18,19 +18,29 @@ function setup(){
     // requestAnimationFrame(gameLoop);
 
     let renderer = null;
+    let game : Game = null;
 
     initializeControls((state: ControlsState) => {
-        renderer = PIXI.autoDetectRenderer(512, 512, {transparent: false});
+        if(state.simulationStarted){
+            game.stopGameLoop();
+            game = null;
+            renderer = null;
+            document.getElementById('renderer').innerHTML = '';
+        }
+        else {
+            renderer = PIXI.autoDetectRenderer(512, 512, {transparent: false});
 
-        let rendererHolder = document.getElementById('renderer');
-        rendererHolder.appendChild(renderer.view);
+            let rendererHolder = document.getElementById('renderer');
+            rendererHolder.appendChild(renderer.view);
 
-        (renderer as any).backgroundColor = 0x000000;
-        let stage = new PIXI.Container();
-        renderer.render(stage);
+            (renderer as any).backgroundColor = 0x000000;
+            let stage = new PIXI.Container();
+            renderer.render(stage);
 
-        let game = new Game(stage, renderer, state);
-        game.startGameLoop();
+            game = new Game(stage, renderer, state);
+            game.startGameLoop();
+        }
+
     });
 
 
