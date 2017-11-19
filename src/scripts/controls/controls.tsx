@@ -133,6 +133,13 @@ class Controls extends React.Component<ControlsProps, ControlsState> {
                 <button onClick={this.onStartStop.bind(this)}>{this.state.simulationStarted ? 'Stop' : 'Start'}</button>
                 Speed: <input/>
                 <div>
+                    <h2>Presets</h2>
+                    <select>
+                        <option>Option 1</option>
+                        <option>Option 2</option>
+                    </select>
+                </div>
+                <div>
                     <h2>Add planet</h2>
                     <div>
                         position:

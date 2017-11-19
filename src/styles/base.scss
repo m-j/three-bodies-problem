@@ -15,9 +15,16 @@
 
 .renderer {
   grid-area: renderer;
+
+  canvas {
+    border-style: dashed;
+    border-color: #bda0bd;
+  }
 }
 
 .controls {
-  background-color: red;
+  background-color: #dff8ff;
   grid-area: controls;
+  border-color: #9fb6bd;
+  border-style: dashed;
 }
